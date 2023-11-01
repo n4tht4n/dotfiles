@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+OS="$(uname)"
+USERNAME="$USER"
+MISSING_MANDATORY_TOOL=0
+
+echo -e "\n🚀 Executing remote-bootstrap... dotfiles.git → ~/.dotfiles\n" && sleep 2
+
+# check for supported system
+if [[ "$OS" != "Linux" && "$OS" != "Darwin" ]]; then
+  echo "💣 Didn't find a supported system! ($OS not in [Linux, Darwin])" && exit 1
+elif [[ "$OS" == "Linux" ]]; then
+  [ -f /etc/os-release ] && . /etc/os-release && OS=$ID
+  if [[ "$OS" != "debian" && "$OS" != "raspbian" ]]; then
+    echo "💣 Didn't find a supported Linux! ($OS is not in [debian, raspbian])" && exit 1
+  fi
+fi
+
+# Linux: ensure mandatory tools
+if [[ "$OS" != "Darwin" ]]; then
+  # (do this 1st to have zsh as the default shell after relog 😎)
+  type curl &> /dev/null || MISSING_MANDATORY_TOOL=1
+  type zsh &> /dev/null || MISSING_MANDATORY_TOOL=1
+  if [[ $MISSING_MANDATORY_TOOL -ne 0 ]]; then
+    echo "🚧 Installing some mandatory tools (curl, zsh)!" && sleep 2
+    su root -c "export PATH=/usr/sbin:$PATH;apt install curl zsh;chsh -s /bin/zsh $USERNAME;exit 0"
+  fi
+
+  type sudo &> /dev/null
+  if [[ $? -ne 0 ]]; then
+    echo "🚧 Installing missing 'sudo'!" && sleep 2
+    su root -c "export PATH=/usr/sbin:$PATH;apt install sudo;usermod -aG sudo $USERNAME;exit 0"
+    echo "💣 Please relog the shell to get full access to 'sudo'! Then rerun this script again!" && exit 0
+  fi
+fi
+
+# pkgx installation
+type pkgx &> /dev/null || (curl -fsS https://pkgx.sh | sh)
+
+# load git and chezmoi into pkgx env to proceed
+eval "$(pkgx integrate)"
+env +git +chezmoi
+
+# apply dotfiles
+chezmoi init -S ~/.dotfiles --apply n4tht4n
