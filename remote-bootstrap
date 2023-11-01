@@ -54,7 +54,7 @@ if [[ $? -ne 0 ]]; then
 
     if [[ "$OS" == "debian" ]]; then
       # need more prerequisites!
-      sudo apt install build-essential curl file procps vim
+      sudo apt install build-essential curl file git procps vim
     fi
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -64,7 +64,7 @@ if [[ $? -ne 0 ]]; then
 fi
 eval "$($HOMEBREW_BIN shellenv)"
 
-### 4. Install chezmoi
+### 4. Install chezmoi 
 chezmoi --version &> /dev/null
 if [[ $? -ne 0 ]]; then
   brew install chezmoi
