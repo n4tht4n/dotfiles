@@ -1,0 +1,119 @@
+#!/usr/bin/env bash
+
+# TODO: cleanup those vars!
+
+REPO="https://github.com/n4tht4n/dotfiles.git"
+BRANCH="1-feat-add-remote-bootstrapping"
+
+TARGET_SUBDIR=".dotfiles"
+TARGET_DIR="$HOME/$TARGET_SUBDIR"
+
+OS="$(uname)"
+USERNAME="$USER"
+
+HOMEBREW_BIN="/opt/homebrew/bin/brew"   # defaults to macOS
+if [[ "$OS" != "Darwin" ]]; then
+  HOMEBREW_BIN="/home/linuxbrew/.linuxbrew/bin/brew"
+fi
+
+echo -e "\n🚀 Executing remote-bootstrap... $REPO → $TARGET_DIR" && sleep 2
+
+### 1. Check if we're running on a supported system
+if [[ "$OS" != "Linux" && "$OS" != "Darwin" ]]; then
+  echo "💣 Didn't find a supported system! ($OS not in [Linux, Darwin])" && exit 1
+elif [[ "$OS" == "Linux" ]]; then
+  [ -f /etc/os-release ] && . /etc/os-release && OS=$ID
+  if [[ "$OS" != "debian" && "$OS" != "raspbian" ]]; then
+    echo "💣 Didn't find a supported Linux! ($OS is not in [debian, raspbian])" && exit 1
+  fi
+fi
+
+### 2. On a fresh Linux, make sure we have some required tools ready
+if [[ "$OS" != "Darwin" ]]; then
+  # sudo!?
+  sudo -h &> /dev/null
+  if [[ $? -ne 0 ]]; then
+    echo "🚧 Installing missing 'sudo'!" && sleep 2
+    su root -c "export PATH=/usr/sbin:$PATH;apt install sudo;usermod -aG sudo $USERNAME;exit 0"
+    echo "💣 Please relog the shell to get full access to 'sudo'! Then rerun this script again!" && exit 0
+  fi
+
+  # zsh!?
+  zsh --version $> /dev/null
+  if [[ $? -ne 0 ]]; then
+    echo "🚧 Installing missing 'zsh'!" && sleep 2
+    su root -c "export PATH=/usr/sbin:$PATH;apt install zsh;chsh -s /bin/zsh $USERNAME;exit 0"
+  fi
+fi
+
+### 3. Install brew
+$HOMEBREW_BIN --version &> /dev/null
+if [[ $? -ne 0 ]]; then
+  if [[ "$OS" != "raspbian" ]]; then
+    echo "🍺 Installing Homebrew..." && sleep 2
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  else
+    echo "💣 Homebrew installation on Raspbian not yet implemented!" && exit 1
+  fi
+fi
+eval "$($HOMEBREW_BIN shellenv)"
+
+### 4. Install chezmoi
+chezmoi --version &> /dev/null
+if [[ $? -ne 0 ]]; then
+  brew install chezmoi
+fi
+
+### 5. Call chezmoi to take over (it will also clone this repo!)
+chezmoi init -S ~/.dotfiles --apply n4tht4n
+
+
+
+
+
+
+
+
+### 3. Install 'nix'
+
+### 4. Install 'git' via 'nix' to get latest version
+
+### 5. Install 'brew' if on macOS
+
+### 6. Install 'chezmoi' via 'nix'
+
+### 7. Finally call 'chezmoi' to bootstrap the machine and tool configs
+
+# ### 3. Make sure 'git' is available
+# if [[ "$OS" == "Darwin" ]]; then
+#   git -h &> /dev/null
+#   if [[ $? -ne 0 ]]; then
+#     echo "🚧 Please install the dev tools first (that popped up)! Then rerun this script again!" && exit 1
+#   fi
+# elif [[ "$OS" == "debian" ]]; then
+#   git -h &> /dev/null
+#   if [[ $? -ne 0 ]]; then
+#     echo "🚧 Installing missing 'git'!" && sleep 2
+#     sudo apt-get update && sudo apt-get install git
+#   fi
+# fi
+
+# cd $HOME
+
+# ### 4. Either clone the repo or just pull changes
+# if [[ -d $TARGET_DIR ]]; then
+#   echo "💛 '$TARGET_DIR' is already cloned, pulling changes..." && sleep 2
+#   cd $TARGET_DIR
+#   git fetch origin
+#   git checkout $BRANCH
+#   git pull
+# else
+#   echo "🚧 Cloning $REPO → $TARGET_DIR..." && sleep 2
+#   git clone $REPO $TARGET_SUBDIR
+#   cd $TARGET_DIR
+#   git checkout $BRANCH
+# fi
+
+# ### 5. Finally, delegate to the 'install' script to proceed
+# ./install
+
