@@ -30,19 +30,19 @@ fi
 
 ### 2. On a fresh Linux, make sure we have some required tools ready
 if [[ "$OS" != "Darwin" ]]; then
+  # zsh!? (do this 1st, to have zsh as the default shell after relog 😎)
+  zsh --version $> /dev/null
+  if [[ $? -ne 0 ]]; then
+    echo "🚧 Installing missing 'zsh'!" && sleep 2
+    su root -c "export PATH=/usr/sbin:$PATH;apt install zsh;chsh -s /bin/zsh $USERNAME;exit 0"
+  fi
+
   # sudo!?
   sudo -h &> /dev/null
   if [[ $? -ne 0 ]]; then
     echo "🚧 Installing missing 'sudo'!" && sleep 2
     su root -c "export PATH=/usr/sbin:$PATH;apt install sudo;usermod -aG sudo $USERNAME;exit 0"
     echo "💣 Please relog the shell to get full access to 'sudo'! Then rerun this script again!" && exit 0
-  fi
-
-  # zsh!?
-  zsh --version $> /dev/null
-  if [[ $? -ne 0 ]]; then
-    echo "🚧 Installing missing 'zsh'!" && sleep 2
-    su root -c "export PATH=/usr/sbin:$PATH;apt install zsh;chsh -s /bin/zsh $USERNAME;exit 0"
   fi
 fi
 
@@ -51,6 +51,12 @@ $HOMEBREW_BIN --version &> /dev/null
 if [[ $? -ne 0 ]]; then
   if [[ "$OS" != "raspbian" ]]; then
     echo "🍺 Installing Homebrew..." && sleep 2
+
+    if [[ "$OS" == "debian" ]]; then
+      # need more prerequisites!
+      sudo apt install build-essential curl file procps vim
+    fi
+
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   else
     echo "💣 Homebrew installation on Raspbian not yet implemented!" && exit 1
