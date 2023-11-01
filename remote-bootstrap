@@ -49,17 +49,19 @@ fi
 ### 3. Install brew
 $HOMEBREW_BIN --version &> /dev/null
 if [[ $? -ne 0 ]]; then
+  if [[ "$OS" != "Darwin" ]]; Then
+    # need more prerequisites!
+    sudo apt install build-essential curl file git procps vim
+  fi
+  
   if [[ "$OS" != "raspbian" ]]; then
     echo "🍺 Installing Homebrew..." && sleep 2
-
-    if [[ "$OS" == "debian" ]]; then
-      # need more prerequisites!
-      sudo apt install build-essential curl file git procps vim
-    fi
-
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   else
-    echo "💣 Homebrew installation on Raspbian not yet implemented!" && exit 1
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/n4tht4n/dotfiles/1-feat-add-remote-bootstrapping/custom-ruby)"
+
+    echo "🍺 Installing Homebrew..." && sleep 2
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/n4tht4n/Homebrew-install/raspi-support-tests/install.sh)"
   fi
 fi
 eval "$($HOMEBREW_BIN shellenv)"
