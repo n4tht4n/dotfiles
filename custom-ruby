@@ -53,10 +53,10 @@ sudo apt install -y \
   libncurses5-dev libffi-dev libgdbm-dev
 
 # Install Ruby 2.6, don't generate RDoc to save lots of time
-CONFIGURE_OPTS="--disable-install-doc --enable-shared" rbenv install $RUBY_VERSION --verbose
+CONFIGURE_OPTS="--disable-install-doc --enable-shared" rbenv install 2.6.10 --verbose
 
 # Set Ruby 2.6 as the global default
-rbenv global $RUBY_VERSION
+rbenv global 2.6.10
 
 # Don't install docs for gems (saves lots of time)
 echo "gem: --no-document" > ~/.gemrc
