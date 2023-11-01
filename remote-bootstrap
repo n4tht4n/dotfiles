@@ -2,10 +2,11 @@
 
 OS="$(uname)"
 USERNAME="$USER"
+MISSING_MANDATORY_TOOL=0
 
-echo -e "\n🚀 Executing remote-bootstrap... dotfiles.git → ~/.dotfiles" && sleep 2
+echo -e "\n🚀 Executing remote-bootstrap... dotfiles.git → ~/.dotfiles\n" && sleep 2
 
-### 1. Check if we're running on a supported system
+# check for supported system
 if [[ "$OS" != "Linux" && "$OS" != "Darwin" ]]; then
   echo "💣 Didn't find a supported system! ($OS not in [Linux, Darwin])" && exit 1
 elif [[ "$OS" == "Linux" ]]; then
@@ -15,14 +16,17 @@ elif [[ "$OS" == "Linux" ]]; then
   fi
 fi
 
-### 2. On a fresh Linux, make sure we have some basic and required tools ready
+# install mandatory tools in Linux
 if [[ "$OS" != "Darwin" ]]; then
-  # curl and zsh!? (do this 1st to have zsh as the default shell after relog 😎)
-  echo "🚧 Installing some mandatory tools!" && sleep 2
-  su root -c "export PATH=/usr/sbin:$PATH;apt install curl zsh;chsh -s /bin/zsh $USERNAME;exit 0"
+  # (do this 1st to have zsh as the default shell after relog 😎)
+  type curl &> /dev/null || MISSING_MANDATORY_TOOL=1
+  type zsh &> /dev/null || MISSING_MANDATORY_TOOL=1
+  if [[ $MISSING_MANDATORY_TOOL -ne 0 ]]; then
+    echo "🚧 Installing some mandatory tools (curl, zsh)!" && sleep 2
+    su root -c "export PATH=/usr/sbin:$PATH;apt install curl zsh;chsh -s /bin/zsh $USERNAME;exit 0"
+  fi
 
-  # sudo!?
-  sudo -h &> /dev/null
+  type sudo &> /dev/null
   if [[ $? -ne 0 ]]; then
     echo "🚧 Installing missing 'sudo'!" && sleep 2
     su root -c "export PATH=/usr/sbin:$PATH;apt install sudo;usermod -aG sudo $USERNAME;exit 0"
@@ -30,12 +34,12 @@ if [[ "$OS" != "Darwin" ]]; then
   fi
 fi
 
-### 3. Install pkgx
+# pkgx installation
 type pkgx &> /dev/null || (curl -fsS https://pkgx.sh | sh)
 
-### 4. Load the pkgx env temporarily and install git and chezmoi on-the-fly
+# load git and chezmoi into pkgx env to proceed
 eval "$(pkgx integrate)"
 env +git +chezmoi
 
-### 5. Call chezmoi to take over (it will also clone this repo!)
+# apply dotfiles
 chezmoi init -S ~/.dotfiles --apply n4tht4n
