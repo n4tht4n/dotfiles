@@ -16,7 +16,7 @@ elif [[ "$OS" == "Linux" ]]; then
   fi
 fi
 
-# install mandatory tools in Linux
+# Linux: ensure mandatory tools
 if [[ "$OS" != "Darwin" ]]; then
   # (do this 1st to have zsh as the default shell after relog 😎)
   type curl &> /dev/null || MISSING_MANDATORY_TOOL=1
