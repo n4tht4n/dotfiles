@@ -1,0 +1,6 @@
+{{- $env := promptString "Which env we're running on, 'work | utm | server | private'" -}}
+
+sourceDir: ~/.dotfiles
+
+data:
+  env: "{{ $env }}"
