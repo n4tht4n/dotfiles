@@ -1,0 +1,11 @@
+[github]
+  user = n4tht4n
+
+[user]
+  name = N4tht4N
+  email = n4tht4n@mailbox.org
+
+{{ if eq .chezmoi.config.data.env "work" }}
+[includeIf "gitdir:~/dev/work"]
+  path = config.local.work
+{{ end }}
