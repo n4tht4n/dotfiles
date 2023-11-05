@@ -35,7 +35,7 @@
 # Allow for local adjustments...
 [include]
   path = config.local
-{{ if eq .chezmoi.config.data.env "work" }}
+{{ if eq .env "work" }}
 # Special local adjustments @work
 [includeIf "gitdir:~/dev/work/"]
   path = config.work

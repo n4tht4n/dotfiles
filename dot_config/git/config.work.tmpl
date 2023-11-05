@@ -1,5 +1,5 @@
-{{- if eq .chezmoi.config.data.env "work" -}}
+{{- if eq .env "work" -}}
 [user]
-  name = {{ .chezmoi.config.data.gitWorkName }}
-  email = {{ .chezmoi.config.data.gitWorkMail}}
+  name = {{ .gitWorkName }}
+  email = {{ .gitWorkMail}}
 {{ end }}
