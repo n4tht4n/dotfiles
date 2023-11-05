@@ -1,0 +1,5 @@
+{{- if eq .chezmoi.config.data.env "work" -}}
+[user]
+  name = {{ .chezmoi.config.data.gitWorkName }}
+  email = {{ .chezmoi.config.data.gitWorkMail}}
+{{ end }}

@@ -1,6 +1,12 @@
 {{- $env := promptString "Which env we're running on, 'work | utm | server | private'" -}}
+{{- $gitWorkName := promptString "What should be your Git name @work (leave empty if not used)" -}}
+{{- $gitWorkMail := promptString "What should be your Git mail @work (leave empty if not used)" -}}
 
 sourceDir: ~/.dotfiles
 
 data:
   env: "{{ $env }}"
+  {{ if eq $env "work" }}
+  gitWorkName: "{{ $gitWorkName }}"
+  gitWorkMail: "{{ $gitWorkMail }}"
+  {{ end }}

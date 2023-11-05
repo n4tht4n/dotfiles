@@ -26,7 +26,17 @@
   hunk-header-file-style = red
   hunk-header-line-number-stlye = "#067a00"
   hunk-header-style = file line-number syntax
+[github]
+  user = n4tht4n
+[user]
+  name = N4tht4N
+  email = n4tht4n@mailbox.org
 
 # Allow for local adjustments...
 [include]
   path = config.local
+{{ if eq .chezmoi.config.data.env "work" }}
+# Special local adjustments @work
+[includeIf "gitdir:~/dev/work/"]
+  path = config.work
+{{ end }}
