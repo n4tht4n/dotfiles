@@ -42,4 +42,4 @@ eval "$(pkgx integrate)"
 env +git +chezmoi
 
 # apply dotfiles
-chezmoi init -S ~/.dotfiles --apply n4tht4n
+chezmoi init -S ~/.dotfiles --branch 2-feat-add-basic-chezmoi-setup --apply n4tht4n
