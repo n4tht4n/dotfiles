@@ -1,0 +1,11 @@
+gui:
+  showIcons: true
+  sidePanelWidth: 0.2
+
+git:
+  branchLogCmd: "git log --oneline {{branchName}}"
+  allBranchesLogCmd: 'git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"'
+
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
