@@ -1,0 +1,5 @@
+{{- if eq .env "work" -}}
+[user]
+  name = {{ .gitWorkName }}
+  email = {{ .gitWorkMail}}
+{{ end }}
