@@ -1,0 +1,4 @@
+
+### user config
+
+[[ ! -f ${ZDOTDIR}/.aliases ]] || source ${ZDOTDIR}/.aliases
