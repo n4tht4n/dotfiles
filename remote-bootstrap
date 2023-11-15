@@ -66,8 +66,8 @@ fi
 
 #######################################################################
 ### install chezmoi via homebrew to determine followup packages
-eval "$(HOMEBREW_BIN shellenv)"
-$HOMEBREW_BIN analytics off
+eval "$($HOMEBREW_BIN shellenv)"
+brew analytics off
 brew install chezmoi
  
 #######################################################################
