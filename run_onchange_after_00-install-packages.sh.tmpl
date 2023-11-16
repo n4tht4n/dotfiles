@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-pkgx install chezmoi
-pkgx install delta
-pkgx install git
-pkgx install lazygit
+brew bundle --global -q --no-lock
 
+{{ if eq .chezmoi.os "linux" }}
+type docker
+{{ end }}
