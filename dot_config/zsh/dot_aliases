@@ -2,6 +2,18 @@
 
 alias ..='cd ..'
 
+### bat instead of cat ###
+type bat &> /dev/null && alias cat='bat'
+
+### exa instead of ls ###
+type exa &> /dev/null && alias ls='exa --icons'
+type exa &> /dev/null && alias ll='exa --icons -lFhg --time-style=long-iso'
+type exa &> /dev/null && alias la='exa --icons -lFhg --time-style=long-iso --all'
+
+### nvim instead of vi(m) ###
+type nvim &> /dev/null && alias vi='nvim'
+type nvim &> /dev/null && alias vim='nvim'
+
 ### git
 alias g='git'
 alias ga='git add'
@@ -21,3 +33,17 @@ type lazygit &> /dev/null && alias lg='lazygit'
 type ncal &> /dev/null && alias c='ncal -w -3'
 type ncal &> /dev/null && alias cy='ncal -w -y'
 type ncal &> /dev/null && alias c3='ncal -B 3 -A 3'
+
+### timewarrior ###
+type timew &> /dev/null && alias tw='timew'
+type timew &> /dev/null && alias tws='timew summary'
+type timew &> /dev/null && alias twsi='timew summary :ids'
+type timew &> /dev/null && alias twsy='timew summary :yesterday'
+type timew &> /dev/null && alias twd='timew day'
+type timew &> /dev/null && alias tww='timew week'
+type timew &> /dev/null && alias twm='timew month'
+type timew &> /dev/null && alias twa='timew start'
+type timew &> /dev/null && alias two='timew stop'
+type timew &> /dev/null && alias twc='timew continue'
+type timew &> /dev/null && alias twma='timew modify start'
+type timew &> /dev/null && alias twmo='timew modify end'

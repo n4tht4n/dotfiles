@@ -2,44 +2,74 @@
 
 OS="$(uname)"
 USERNAME="$USER"
-MISSING_MANDATORY_TOOL=0
+HOMEBREW_BIN="/opt/homebrew/bin/brew" # defaults to macOS...
 
 echo -e "\n🚀 Executing remote-bootstrap... dotfiles.git → ~/.dotfiles\n" && sleep 2
 
-# check for supported system
+#######################################################################
+### check for supported system
 if [[ "$OS" != "Linux" && "$OS" != "Darwin" ]]; then
   echo "💣 Didn't find a supported system! ($OS not in [Linux, Darwin])" && exit 1
 elif [[ "$OS" == "Linux" ]]; then
+  HOMEBREW_BIN="/home/linuxbrew/.linuxbrew/bin/brew"
   [ -f /etc/os-release ] && . /etc/os-release && OS=$ID
   if [[ "$OS" != "debian" && "$OS" != "raspbian" ]]; then
     echo "💣 Didn't find a supported Linux! ($OS is not in [debian, raspbian])" && exit 1
   fi
 fi
 
-# Linux: ensure mandatory tools
-if [[ "$OS" != "Darwin" ]]; then
+#######################################################################
+### Linux: ensure mandatory tools
+if [[ "$OS" == "debian" ]]; then
+  INSTALLED_ANY_MANDATORY_TOOL=0
+  
   # (do this 1st to have zsh as the default shell after relog 😎)
-  type curl &> /dev/null || MISSING_MANDATORY_TOOL=1
-  type zsh &> /dev/null || MISSING_MANDATORY_TOOL=1
-  if [[ $MISSING_MANDATORY_TOOL -ne 0 ]]; then
-    echo "🚧 Installing some mandatory tools (curl, zsh)!" && sleep 2
-    su root -c "export PATH=/usr/sbin:$PATH;apt install curl zsh;chsh -s /bin/zsh $USERNAME;exit 0"
+  type zsh &> /dev/null
+  if [[ $? -ne 0 ]]; then
+    echo "🚧 Installing 'zsh' and making it the default shell!" && sleep 2
+    su root -c "export PATH=/usr/sbin:$PATH;apt install zsh;chsh -s /bin/zsh $USERNAME;exit 0"
+    INSTALLED_ANY_MANDATORY_TOOL=1
   fi
 
   type sudo &> /dev/null
   if [[ $? -ne 0 ]]; then
     echo "🚧 Installing missing 'sudo'!" && sleep 2
     su root -c "export PATH=/usr/sbin:$PATH;apt install sudo;usermod -aG sudo $USERNAME;exit 0"
-    echo "💣 Please relog the shell to get full access to 'sudo'! Then rerun this script again!" && exit 0
+    INSTALLED_ANY_MANDATORY_TOOL=1
+  fi
+
+  if [[ $INSTALLED_ANY_MANDATORY_TOOL -ne 0 ]]; then
+    echo "💣 Please relog the shell to finish madantory tools setup! Then rerun this script again!" && exit 0
+  fi
+
+  # now install the final Homebrew prerequisites...
+  echo "🚧 Installing Homebrew prerequisites..." && sleep 2
+  sudo apt update && sudo apt install build-essential curl file git procps vim
+fi
+
+#######################################################################
+### MacOS: ensure mandatory tool(s)
+if [[ "$OS" == "Darwin" ]]; then
+  git -h &> /dev/null
+  if [[ $? -ne 0 ]]; then
+    echo "🚧 Please install dev tools first (that popped up)! Then rerun this script again!" && exit 0
   fi
 fi
 
-# pkgx installation
-type pkgx &> /dev/null || (curl -fsS https://pkgx.sh | sh)
+#######################################################################
+### install homebrew itself
+$HOMEBREW_BIN --version &> /dev/null
+if [[ $? -ne 0 ]]; then
+  echo "🍺 Installing Homebrew..." && sleep 2
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
 
-# load git and chezmoi into pkgx env to proceed
-eval "$(pkgx integrate)"
-env +git +chezmoi
-
-# apply dotfiles
+#######################################################################
+### install chezmoi via homebrew to determine followup packages
+eval "$($HOMEBREW_BIN shellenv)"
+brew analytics off
+brew install chezmoi
+ 
+#######################################################################
+### apply dotfiles using chezmoi
 chezmoi init -S ~/.dotfiles --apply n4tht4n

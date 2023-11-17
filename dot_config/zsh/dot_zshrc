@@ -2,3 +2,8 @@
 ### user config
 
 [[ ! -f ${ZDOTDIR}/.aliases ]] || source ${ZDOTDIR}/.aliases
+
+if [ $(command -v "fzf") ]; then
+  [[ -f ${HOMEBREW_REPOSITORY}/opt/fzf/shell/completion.zsh ]] && source $HOMEBREW_REPOSITORY/opt/fzf/shell/completion.zsh
+  [[ -f ${HOMEBREW_REPOSITORY}/opt/fzf/shell/key-bindings.zsh ]] && source $HOMEBREW_REPOSITORY/opt/fzf/shell/key-bindings.zsh
+fi
