@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# This script will run once and will install the terminfo of wezterm.
+
+{{ if eq .chezmoi.os "darwin" }}
+tempfile=$(mktemp) \
+    && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo \
+    && tic -x -o ~/.terminfo $tempfile \
+    && rm $tempfile
+{{ end }}

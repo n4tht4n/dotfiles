@@ -3,3 +3,6 @@ LICENSE
 remote-bootstrap
 
 .config/git/config.local
+.config/zsh/.zsh_history
+.config/zsh/.zcompdump*
+.config/zsh/.oh-my-zsh/**

@@ -1,0 +1,6 @@
+# Inlude an "local" config...
+Include config_local
+
+Host *
+  # Make sure to use a "compatible" TERM when connecting to any host! ;)
+  SetEnv TERM=xterm-256color
