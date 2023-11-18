@@ -1,3 +1,30 @@
+### oh-my-zsh stuff
+
+# Path to oh-my-zsh installation.
+export ZSH="$XDG_CONFIG_HOME/zsh/.oh-my-zsh"
+#ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME="agnoster"
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# https://www.chezmoi.io/user-guide/include-files-from-elsewhere/#include-a-subdirectory-from-a-url
+export DISABLE_AUTO_UPDATE="true"
+
+# vi-mode configuration
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
+VI_MODE_SET_CURSOR=true
+
+# Which plugins would you like to load?
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git fzf vi-mode zsh-autosuggestions zsh-syntax-highlighting kubectl)
+
+source $ZSH/oh-my-zsh.sh
 
 ### user config
 
@@ -7,3 +34,4 @@ if [ $(command -v "fzf") ]; then
   [[ -f ${HOMEBREW_REPOSITORY}/opt/fzf/shell/completion.zsh ]] && source $HOMEBREW_REPOSITORY/opt/fzf/shell/completion.zsh
   [[ -f ${HOMEBREW_REPOSITORY}/opt/fzf/shell/key-bindings.zsh ]] && source $HOMEBREW_REPOSITORY/opt/fzf/shell/key-bindings.zsh
 fi
+
