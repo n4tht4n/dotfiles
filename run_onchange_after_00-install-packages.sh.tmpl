@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# 'Brewfile' hash: {{ include "dot_Brewfile.tmpl" | sha256sum }}
+# This will re-execute this script if the SHA256 sum changes 😎
+# https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/#run-a-script-when-the-contents-of-another-file-changes
 brew bundle --global -q --no-lock
 
 {{ if (and (eq .chezmoi.os "linux") (eq .env "server") ) }}
