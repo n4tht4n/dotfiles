@@ -1,7 +1,15 @@
+.DS_Store
 README.md
 LICENSE
 remote-bootstrap
 
+.config/cache/**
 .config/git/config.local
+.config/lazygit/state.yml
+.config/share/**
 .config/zsh/.zsh_history
 .config/zsh/.zcompdump*
+.config/zsh/.oh-my-zsh/cache/**
+
+.ssh/known_hosts*
+.ssh/id_*
