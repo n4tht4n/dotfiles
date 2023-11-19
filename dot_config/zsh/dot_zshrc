@@ -35,3 +35,6 @@ if [ $(command -v "fzf") ]; then
   [[ -f ${HOMEBREW_REPOSITORY}/opt/fzf/shell/key-bindings.zsh ]] && source $HOMEBREW_REPOSITORY/opt/fzf/shell/key-bindings.zsh
 fi
 
+### finally use oh-my-posh prompt
+eval "$(oh-my-posh init zsh --config $XDG_CONFIG_HOME/zsh/.theme.omp.json)"
+
