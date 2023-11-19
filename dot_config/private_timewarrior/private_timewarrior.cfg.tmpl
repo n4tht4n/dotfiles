@@ -1,0 +1,18 @@
+# Unfortunately, timewarrior doesn't seem to support either relative paths or ENV variables 😕
+# So for the time being, those paths must be absolute...
+
+import {{ .chezmoi.homeDir -}}/.config/timewarrior/themes/dark_green.theme
+import {{ .chezmoi.homeDir -}}/.config/timewarrior/extensions/holidays.de-DE
+{{- if eq .env "work" -}}
+import {{ .chezmoi.homeDir -}}/.config/timewarrior/extensions/vacations.de-DE
+{{- end }}
+
+{{ if eq .env "work" -}}
+exclusions.monday = <5:30 >18:00
+exclusions.tuesday = <5:30 >18:00
+exclusions.wednesday = <5:30 >18:00
+exclusions.thursday = <5:30 >18:00
+exclusions.friday = <5:30 >18:00
+exclusions.saturday = >0:00
+exclusions.sunday = >0:00
+{{ end -}}
