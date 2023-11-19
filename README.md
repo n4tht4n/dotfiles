@@ -1,5 +1,5 @@
 # dotfiles
- 
+
 > Dotfiles configuration and system bootstrapping, applicable to macOS and Linux.
 
 My dotfiles configurations are based on [chezmoi](https://www.chezmoi.io/). To install all my
@@ -22,3 +22,15 @@ apply the configurations.
 
 `chezmoi` will also generate further "install scripts" for `pkgx` depending on the concrete
 machine. That's one of the main benefits of `chezmoi`!
+
+## 🚧 POST Bootstrap Steps
+
+There is one manual step right now 🤬. Let's see how I can resolve this in the long run.
+
+### Zellij Plugin Installation
+
+_Zellij_ is already configured to use the [zjsatus](https://github.com/dj95/zjstatus) plugin. But
+that plugin must be installed manually in the latest version, as I don't use _Nix_!
+
+Run `zellij setup --check` to see where the `PLUGIN DIR` is located and thus where to put the
+downloaded `zjstatus.wasm`. If the plugin is not there, _Zellij_ will refuse to load.
