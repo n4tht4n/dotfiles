@@ -1,4 +1,11 @@
 require('lazy').setup({
+  -- highlight, edit, and navigate code
+  {
+    'nvim-treesitter/nvim-treesitter',
+    dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
+    build = ':TSUpdate',
+  },
+
   -- fuzzy finder for files, lists, etc.
   {
     'nvim-telescope/telescope.nvim',
