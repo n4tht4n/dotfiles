@@ -6,6 +6,7 @@ require('lazy.plugins')
 
 require('me.colorscheme')
 
+require('me.telescope')
 require('me.nvim-tree')
 require('me.lualine')
 
