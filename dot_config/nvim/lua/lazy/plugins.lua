@@ -36,6 +36,56 @@ require('lazy').setup({
     event = 'VeryLazy',
   },
 
+  -- show indentation scope
+  {
+    'echasnovski/mini.indentscope',
+    version = '*',
+    opts = {
+      try_as_border = true
+    }
+  },
+
+  -- easy commenting
+  {
+    'echasnovski/mini.comment',
+    version = '*',
+    opts = {}
+  },
+
+  -- pattern highlighting
+  {
+    'echasnovski/mini.hipatterns',
+    version = '*',
+    config = function()
+      local hipatterns = require('mini.hipatterns')
+      hipatterns.setup({
+        highlighters = {
+          -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+          fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+          hack  = { pattern = '%f[%w]()HACK()%f[%W]',  group = 'MiniHipatternsHack'  },
+          todo  = { pattern = '%f[%w]()TODO()%f[%W]',  group = 'MiniHipatternsTodo'  },
+          note  = { pattern = '%f[%w]()NOTE()%f[%W]',  group = 'MiniHipatternsNote'  },
+          -- Highlight hex color strings (`#rrggbb`) using that color, e.g. "#ff0000"
+          hex_color = hipatterns.gen_highlighter.hex_color(),
+        }
+      })
+    end
+  },
+
+  -- autopairs
+  {
+    'echasnovski/mini.pairs',
+    version = '*',
+    opts = {}
+  },
+
+  -- surround actions
+  {
+    'echasnovski/mini.surround',
+    version = '*',
+    opts = {}
+  },
+
   -- help popup
   {
     'folke/which-key.nvim',
