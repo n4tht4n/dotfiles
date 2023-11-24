@@ -26,8 +26,9 @@ alias gs='git status'
 alias glol='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"'
 alias glob='git log $(git branch --show-current) --oneline'
 
-### lazygit
-type lazygit &> /dev/null && alias lg='lazygit'
+### lazygit & lazydocker
+type lazygit &> /dev/null && alias lzg='lazygit'
+type lazydocker &> /dev/null && alias lzd='lazydocker'
 
 ### cli calendar 😎
 type ncal &> /dev/null && alias c='ncal -w -3'
