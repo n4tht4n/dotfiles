@@ -10,7 +10,6 @@ cask "font-fira-code"
 cask "font-fira-code-nerd-font"
 cask "font-hack-nerd-font"
 cask "fork"
-cask "wezterm"
 
 {{ if ne .env "utm" -}}
 # casks installed only on macOS machines that are not 'utm'
@@ -19,6 +18,7 @@ cask "balenaetcher"
 cask "spotify"
 cask "tiles"
 cask "utm"
+cask "wezterm"
 {{- end }}
 
 {{ if eq .env "private" -}}
