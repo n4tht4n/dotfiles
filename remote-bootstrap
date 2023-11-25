@@ -26,20 +26,20 @@ if [[ "$OS" == "debian" ]]; then
   type zsh &> /dev/null
   if [[ $? -ne 0 ]]; then
     echo "🚧 Installing 'zsh' and making it the default shell!" && sleep 2
-    su root -c "export PATH=/usr/sbin:$PATH;apt install zsh;chsh -s /bin/zsh $USERNAME;exit 0"
+    su root -c "export PATH=/usr/sbin:$PATH;apt -y install zsh;chsh -s /bin/zsh $USERNAME;exit 0"
     INSTALLED_ANY_MANDATORY_TOOL=1
   fi
   type curl &> /dev/null
   if [[ $? -ne 0 ]]; then
     echo "🚧 Installing 'curl'!" && sleep 2
-    su root -c "export PATH=/usr/sbin:$PATH;apt install curl;exit 0"
+    su root -c "export PATH=/usr/sbin:$PATH;apt -y install curl;exit 0"
     INSTALLED_ANY_MANDATORY_TOOL=1
   fi
 
   type sudo &> /dev/null
   if [[ $? -ne 0 ]]; then
     echo "🚧 Installing missing 'sudo'!" && sleep 2
-    su root -c "export PATH=/usr/sbin:$PATH;apt install sudo;usermod -aG sudo $USERNAME;exit 0"
+    su root -c "export PATH=/usr/sbin:$PATH;apt -y install sudo;usermod -aG sudo $USERNAME;exit 0"
     INSTALLED_ANY_MANDATORY_TOOL=1
   fi
 
