@@ -46,38 +46,23 @@ if [[ "$OS" == "debian" ]]; then
   if [[ $INSTALLED_ANY_MANDATORY_TOOL -ne 0 ]]; then
     echo "💣 Please relog the shell to finish madantory tools setup! Then rerun this script again!" && exit 0
   fi
-
-  # and Nix itself
-  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-
-  # make Nix directly usable!
-  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-
-  # install the first mandatory Nix packages before proceeding
-  nix profile install nixpkgs#{git,chezmoi}
-else
-  #######################################################################
-  ### MacOS: ensure mandatory tool(s)
-  git -h &> /dev/null
-  if [[ $? -ne 0 ]]; then
-    echo "🚧 Please install dev tools first (that popped up)! Then rerun this script again!" && exit 0
-  fi
-
-  #######################################################################
-  ### install homebrew itself
-  $HOMEBREW_BIN --version &> /dev/null
-  if [[ $? -ne 0 ]]; then
-    echo "🍺 Installing Homebrew..." && sleep 2
-    bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  fi
-
-  #######################################################################
-  ### install chezmoi via homebrew to determine followup packages
-  eval "$($HOMEBREW_BIN shellenv)"
-  brew analytics off
-  brew install chezmoi
 fi
+
+# and Nix itself
+echo "🚧 Installing 'Nix'!" && sleep 2
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+
+# make Nix directly usable!
+. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+
+# install the first mandatory Nix packages before proceeding
+echo "🚧 Installing 'git' and 'chezmoi' via Nix!" && sleep 2
+nix profile install nixpkgs#{git,chezmoi}
 
 #######################################################################
 ### apply dotfiles using chezmoi
-chezmoi init -S ~/.dotfiles --branch linux-nix --apply n4tht4n
+echo "This would have invoked chezmoi!"
+#chezmoi init -S ~/.dotfiles --branch linux-nix --apply n4tht4n
+
+echo "👍 We're done, please relog and enjoy your freshly installed system 😎 🚀"
+
