@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# This script will run once and will install Homebrew on macOS.
+
+{{ if eq .chezmoi.os "darwin" }}
+type brew &> /dev/null
+if [[ $? -ne 0 ]]; then
+  echo "🍺 Installing Homebrew..." && sleep 2
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/indstall.sh)"
+fi
+{{ end }}
+
