@@ -11,23 +11,28 @@ echo -e "\n🚀 Executing remote-bootstrap... dotfiles.git → ~/.dotfiles\n" &&
 if [[ "$OS" != "Linux" && "$OS" != "Darwin" ]]; then
   echo "💣 Didn't find a supported system! ($OS not in [Linux, Darwin])" && exit 1
 elif [[ "$OS" == "Linux" ]]; then
-  HOMEBREW_BIN="/home/linuxbrew/.linuxbrew/bin/brew"
   [ -f /etc/os-release ] && . /etc/os-release && OS=$ID
-  if [[ "$OS" != "debian" && "$OS" != "raspbian" ]]; then
-    echo "💣 Didn't find a supported Linux! ($OS is not in [debian, raspbian])" && exit 1
+  if [[ "$OS" != "debian" ]]; then
+    echo "💣 Didn't find a supported Linux! ($OS is not in [debian])" && exit 1
   fi
 fi
 
-#######################################################################
-### Linux: ensure mandatory tools
 if [[ "$OS" == "debian" ]]; then
+  #######################################################################
+  ### Linux: ensure mandatory tools
   INSTALLED_ANY_MANDATORY_TOOL=0
-  
+
   # (do this 1st to have zsh as the default shell after relog 😎)
   type zsh &> /dev/null
   if [[ $? -ne 0 ]]; then
     echo "🚧 Installing 'zsh' and making it the default shell!" && sleep 2
     su root -c "export PATH=/usr/sbin:$PATH;apt install zsh;chsh -s /bin/zsh $USERNAME;exit 0"
+    INSTALLED_ANY_MANDATORY_TOOL=1
+  fi
+  type curl &> /dev/null
+  if [[ $? -ne 0 ]]; then
+    echo "🚧 Installing 'curl'!" && sleep 2
+    su root -c "export PATH=/usr/sbin:$PATH;apt install curl;exit 0"
     INSTALLED_ANY_MANDATORY_TOOL=1
   fi
 
@@ -42,34 +47,37 @@ if [[ "$OS" == "debian" ]]; then
     echo "💣 Please relog the shell to finish madantory tools setup! Then rerun this script again!" && exit 0
   fi
 
-  # now install the final Homebrew prerequisites...
-  echo "🚧 Installing Homebrew prerequisites..." && sleep 2
-  sudo apt update && sudo apt install build-essential curl file git procps vim
-fi
+  # and Nix itself
+  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 
-#######################################################################
-### MacOS: ensure mandatory tool(s)
-if [[ "$OS" == "Darwin" ]]; then
+  # make Nix directly usable!
+  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+
+  # install the first mandatory Nix packages before proceeding
+  nix profile install nixpkgs#{git,chezmoi}
+else
+  #######################################################################
+  ### MacOS: ensure mandatory tool(s)
   git -h &> /dev/null
   if [[ $? -ne 0 ]]; then
     echo "🚧 Please install dev tools first (that popped up)! Then rerun this script again!" && exit 0
   fi
+
+  #######################################################################
+  ### install homebrew itself
+  $HOMEBREW_BIN --version &> /dev/null
+  if [[ $? -ne 0 ]]; then
+    echo "🍺 Installing Homebrew..." && sleep 2
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fi
+
+  #######################################################################
+  ### install chezmoi via homebrew to determine followup packages
+  eval "$($HOMEBREW_BIN shellenv)"
+  brew analytics off
+  brew install chezmoi
 fi
 
-#######################################################################
-### install homebrew itself
-$HOMEBREW_BIN --version &> /dev/null
-if [[ $? -ne 0 ]]; then
-  echo "🍺 Installing Homebrew..." && sleep 2
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
-
-#######################################################################
-### install chezmoi via homebrew to determine followup packages
-eval "$($HOMEBREW_BIN shellenv)"
-brew analytics off
-brew install chezmoi
- 
 #######################################################################
 ### apply dotfiles using chezmoi
-chezmoi init -S ~/.dotfiles --apply n4tht4n
+chezmoi init -S ~/.dotfiles --branch linux-nix --apply n4tht4n
