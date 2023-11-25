@@ -1,29 +1,5 @@
 # https://github.com/Homebrew/homebrew-bundle
 
-tap "jandedobbeleer/oh-my-posh"
-
-brew "bat"
-brew "btop"
-brew "exa"
-brew "fd"
-brew "fzf"
-brew "git-delta"
-brew "htop"
-brew "jandedobbeleer/oh-my-posh/oh-my-posh"
-brew "jq"
-brew "lazygit"
-brew "lazydocker"
-brew "lynx"
-brew "neofetch"
-brew "neovim"
-brew "ripgrep"
-brew "task"
-brew "timewarrior"
-brew "tldr"
-brew "yh"
-brew "zellij"
-brew "zsh-completions"
-
 {{ if eq .chezmoi.os "darwin" -}}
 # BEGINNING macOS only section...
 tap "homebrew/cask-fonts"
@@ -34,7 +10,6 @@ cask "font-fira-code"
 cask "font-fira-code-nerd-font"
 cask "font-hack-nerd-font"
 cask "fork"
-cask "wezterm"
 
 {{ if ne .env "utm" -}}
 # casks installed only on macOS machines that are not 'utm'
@@ -43,12 +18,14 @@ cask "balenaetcher"
 cask "spotify"
 cask "tiles"
 cask "utm"
+cask "wezterm"
 {{- end }}
 
 {{ if eq .env "private" -}}
 # casks installed only on macOS machines that are 'private'
 cask "keepingyouawake"
 cask "raspberry-pi-imager"
+cask "thunderbird"
 {{- end }}
 
 {{ end }}
