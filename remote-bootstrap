@@ -49,15 +49,18 @@ fi
 
 #######################################################################
 ### install Nix and necessary tools
-echo "🚧 Installing 'Nix'!" && sleep 2
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+type nix &> /dev/null
+if [[ $? -ne 0 ]]; then
+  echo "🚧 Installing 'Nix'!" && sleep 2
+  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 
-# make Nix directly usable!
-. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  # make Nix directly usable!
+  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
-# install the first mandatory Nix packages before proceeding
-echo "🚧 Installing 'git' and 'chezmoi' via Nix!" && sleep 2
-nix profile install nixpkgs#{git,chezmoi}
+  # install the first mandatory Nix packages before proceeding
+  echo "🚧 Installing 'git' and 'chezmoi' via Nix!" && sleep 2
+  nix profile install nixpkgs#{git,chezmoi}
+fi
 
 #######################################################################
 ### apply dotfiles using chezmoi
