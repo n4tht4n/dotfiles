@@ -2,7 +2,6 @@
 
 OS="$(uname)"
 USERNAME="$USER"
-HOMEBREW_BIN="/opt/homebrew/bin/brew" # defaults to macOS...
 
 echo -e "\n🚀 Executing remote-bootstrap... dotfiles.git → ~/.dotfiles\n" && sleep 2
 
@@ -17,9 +16,9 @@ elif [[ "$OS" == "Linux" ]]; then
   fi
 fi
 
+#######################################################################
+### Linux: ensure mandatory tools
 if [[ "$OS" == "debian" ]]; then
-  #######################################################################
-  ### Linux: ensure mandatory tools
   INSTALLED_ANY_MANDATORY_TOOL=0
 
   # (do this 1st to have zsh as the default shell after relog 😎)
@@ -48,7 +47,8 @@ if [[ "$OS" == "debian" ]]; then
   fi
 fi
 
-# and Nix itself
+#######################################################################
+### install Nix and necessary tools
 echo "🚧 Installing 'Nix'!" && sleep 2
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 
@@ -64,5 +64,5 @@ nix profile install nixpkgs#{git,chezmoi}
 echo "This would have invoked chezmoi!"
 #chezmoi init -S ~/.dotfiles --branch linux-nix --apply n4tht4n
 
-echo "👍 We're done, please relog and enjoy your freshly installed system 😎 🚀"
+echo "👍 We're done, please relog and enjoy your freshly installed system 😎🚀"
 
