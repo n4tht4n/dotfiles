@@ -24,8 +24,8 @@ if [[ "$OS" == "debian" ]]; then
   # (do this 1st to have zsh as the default shell after relog 😎)
   type zsh &> /dev/null
   if [[ $? -ne 0 ]]; then
-    echo "🚧 Installing 'zsh' and making it the default shell!" && sleep 2
-    su root -c "export PATH=/usr/sbin:$PATH;apt -y install zsh;chsh -s /bin/zsh $USERNAME;exit 0"
+    echo "🚧 Installing build essentials and 'zsh' and making it the default shell!" && sleep 2
+    su root -c "export PATH=/usr/sbin:$PATH;apt -y install build-essential zsh;chsh -s /bin/zsh $USERNAME;exit 0"
     INSTALLED_ANY_MANDATORY_TOOL=1
   fi
   type curl &> /dev/null
