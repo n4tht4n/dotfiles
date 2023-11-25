@@ -16,11 +16,14 @@ bash -c "$(wget -qO - https://raw.githubusercontent.com/n4tht4n/dotfiles/main/re
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/n4tht4n/dotfiles/main/remote-bootstrap)"
 ```
 
-Basically, this will install `pkgx` and use a temporary installation of `git` and `chezmoi` to
+Basically, this will install `nix` and use a temporary installation of `git` and `chezmoi` to
 apply the configurations.
 
-`chezmoi` will also generate further "install scripts" for `pkgx` depending on the concrete
+`chezmoi` will also generate further "install scripts" for `nix` depending on the concrete
 machine. That's one of the main benefits of `chezmoi`!
+
+On macOS, `brew` is installed additionally to bootstrap some GUI applications (which are installed with
+`brew install --cask`). The CLI tools on macOS are managed with `nix`, too.
 
 ## 🚧 POST Bootstrap Steps
 
@@ -29,10 +32,16 @@ There is one manual step right now 🤬. Let's see how I can resolve this in the
 ### Zellij Plugin Installation
 
 _Zellij_ is already configured to use the [zjstatus](https://github.com/dj95/zjstatus) plugin. But
-that plugin must be installed manually in the latest version, as I don't use _Nix_!
+that plugin must be installed manually in the latest version!?
 
 Run `zellij setup --check` to see where the `PLUGIN DIR` is located and thus where to put the
 downloaded `zjstatus.wasm`.
+
+Go to the `PLUGIN DIR` and run
+
+```bash
+wget https://github.com/dj95/zjstatus/releases/download/vX.Y.Z/zjstatus.wasm
+```
 
 ## 🔄 Basic chezmoi Usage
 
