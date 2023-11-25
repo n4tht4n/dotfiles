@@ -16,9 +16,9 @@ elif [[ "$OS" == "Linux" ]]; then
   fi
 fi
 
-#######################################################################
-### Linux: ensure mandatory tools
 if [[ "$OS" == "debian" ]]; then
+  #######################################################################
+  ### Linux: ensure mandatory tools
   INSTALLED_ANY_MANDATORY_TOOL=0
 
   # (do this 1st to have zsh as the default shell after relog 😎)
@@ -45,6 +45,24 @@ if [[ "$OS" == "debian" ]]; then
   if [[ $INSTALLED_ANY_MANDATORY_TOOL -ne 0 ]]; then
     echo "💣 Please relog the shell to finish madantory tools setup! Then rerun this script again!" && exit 0
   fi
+else
+  #######################################################################
+  ### macOS: ensure mandatory tool(s)
+  git -h &> /dev/null
+  if [[ $? -ne 0 ]]; then
+    echo "🚧 Please install dev tools first (that popped up)! Then rerun this script again!" && exit 0
+  fi
+
+  #######################################################################
+  ### install Homebrew itself
+  /opt/homebrew/bin/brew --version &> /dev/null
+  if [[ $? -ne 0 ]]; then
+    echo "🍺 Installing Homebrew..." && sleep 2
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fi
+
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  brew analytics off
 fi
 
 #######################################################################
