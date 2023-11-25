@@ -64,8 +64,7 @@ fi
 
 #######################################################################
 ### apply dotfiles using chezmoi
-echo "This would have invoked chezmoi!"
-#chezmoi init -S ~/.dotfiles --branch linux-nix --apply n4tht4n
+chezmoi init -S ~/.dotfiles --branch linux-nix --apply n4tht4n
 
 echo "👍 We're done, please relog and enjoy your freshly installed system 😎🚀"
 
