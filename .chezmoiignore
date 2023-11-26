@@ -4,6 +4,7 @@
 README.md
 LICENSE
 remote-bootstrap
+.zsh_history
 
 # simple directories
 .cups/**
