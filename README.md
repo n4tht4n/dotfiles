@@ -29,6 +29,12 @@ On macOS, `brew` is installed additionally to bootstrap some GUI applications (w
 
 There is one manual step right now 🤬. Let's see how I can resolve this in the long run.
 
+### Change Git Remote
+
+```bash
+git remote set-url origin git@github.com:n4tht4n/dotfiles.git
+```
+
 ### Zellij Plugin Installation
 
 _Zellij_ is already configured to use the [zjstatus](https://github.com/dj95/zjstatus) plugin. But
