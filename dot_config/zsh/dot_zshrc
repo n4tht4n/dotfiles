@@ -31,8 +31,8 @@ source $ZSH/oh-my-zsh.sh
 [[ ! -f ${ZDOTDIR}/.aliases ]] || source ${ZDOTDIR}/.aliases
 
 if [ $(command -v "fzf") ]; then
-  [[ -f ${HOMEBREW_REPOSITORY}/opt/fzf/shell/completion.zsh ]] && source $HOMEBREW_REPOSITORY/opt/fzf/shell/completion.zsh
-  [[ -f ${HOMEBREW_REPOSITORY}/opt/fzf/shell/key-bindings.zsh ]] && source $HOMEBREW_REPOSITORY/opt/fzf/shell/key-bindings.zsh
+  [[ -f ${HOME}/.nix-profile/share/fzf/completion.zsh ]] && source $HOME/.nix-profile/share/fzf/completion.zsh
+  [[ -f ${HOME}/.nix-profile/share/fzf/key-bindings.zsh ]] && source $HOME/.nix-profile/share/fzf/key-bindings.zsh
 fi
 
 ### finally use oh-my-posh prompt
