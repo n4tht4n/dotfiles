@@ -36,6 +36,25 @@ require('lazy').setup({
     event = 'VeryLazy',
   },
 
+  -- git stuff
+  {
+    'lewis6991/gitsigns.nvim',
+    opts = {
+      signs = {
+        -- add = { text = '+' },
+        -- change = { text = '~' },
+        -- delete = { text = '_' },
+        -- topdelete = { text = '‾' },
+        -- changedelete = { text = '~' },
+        -- the following icons are too much!?
+        add = { text = ' ' },
+        change = { text = ' ' },
+        delete = { text = ' ' },
+        untracked = { text = ' ' },
+      },
+    }
+  },
+
   -- show indentation scope
   {
     'echasnovski/mini.indentscope',
