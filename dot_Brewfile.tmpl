@@ -13,8 +13,7 @@ cask "fork"
 
 {{ if ne .env "utm" -}}
 # casks installed only on macOS machines that are not 'utm'
-brew "podman"
-cask "podman-desktop"
+cask "docker"
 cask "balenaetcher"
 cask "spotify"
 cask "tiles"
