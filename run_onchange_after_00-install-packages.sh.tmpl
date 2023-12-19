@@ -6,6 +6,9 @@ if [[ $? -ne 0 ]]; then
   . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 fi
 
-nix profile install nixpkgs#{bat,btop,eza,fd,fzf,delta,oh-my-posh,jq,kubectl,lazygit,lazydocker,lynx,neofetch,neovim}
+nix profile install nixpkgs#{bat,btop,eza,fd,fzf,delta,oh-my-posh,jq,lazygit,lazydocker,lynx,neofetch,neovim}
 nix profile install nixpkgs#{ripgrep,taskwarrior,timewarrior,tldr,zellij,zsh-completions}
+
+# Kubernetes stuff
+nix profile install nixpkgs#{kubectl,kubernetes-helm,kubectx}
 
