@@ -35,6 +35,9 @@ if [[ "$OS" == "debian" ]]; then
     INSTALLED_ANY_MANDATORY_TOOL=1
   fi
 
+  # make sure some K8s cluster relevant stuff is installed
+  su root -c "export PATH=/usr/sbin:$PATH;apt -y install nfs-common open-iscsi;exit 0"
+
   type sudo &> /dev/null
   if [[ $? -ne 0 ]]; then
     echo "🚧 Installing missing 'sudo'!" && sleep 2
