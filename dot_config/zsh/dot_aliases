@@ -7,8 +7,8 @@ type bat &> /dev/null && alias cat='bat'
 
 ### exa instead of ls ###
 type exa &> /dev/null && alias ls='exa --icons'
-type exa &> /dev/null && alias ll='exa --icons -lFhg --time-style=long-iso'
-type exa &> /dev/null && alias la='exa --icons -lFhg --time-style=long-iso --all'
+type exa &> /dev/null && alias ll='exa --icons -lhg --time-style=long-iso -F auto'
+type exa &> /dev/null && alias la='exa --icons -lhg --time-style=long-iso -F auto --all'
 
 ### nvim instead of vi(m) ###
 type nvim &> /dev/null && alias vi='nvim'
