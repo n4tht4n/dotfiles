@@ -6,9 +6,13 @@ if [[ $? -ne 0 ]]; then
   . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 fi
 
-nix profile install nixpkgs#{bat,btop,eza,fd,fzf,delta,oh-my-posh,jq,lazygit,lazydocker,lynx,neofetch,neovim}
-nix profile install nixpkgs#{ripgrep,taskwarrior,timewarrior,tldr,zellij,zsh-completions}
+# installed on every machine
+nix profile install nixpkgs#{bat,btop,eza,fd,fzf,delta,oh-my-posh,jq,lazygit,lazydocker,lynx,neofetch}
+nix profile install nixpkgs#{ripgrep,tldr,zellij,zsh-completions}
 
+{{ if (or (eq .env "private") (eq .env "work")) -}}
+# installed on macOS only
+nix profile install nixpkgs#{neovim,taskwarrior,timewarrior}
 # Kubernetes stuff
 nix profile install nixpkgs#{kubectl,kubernetes-helm,kubectx,kdash,kubeseal}
-
+{{- end }}
