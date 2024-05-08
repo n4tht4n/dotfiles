@@ -22,17 +22,17 @@ if [[ $? -ne 0 ]]; then
   # Now install Docker
   sudo apt update
   sudo apt -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-  # Make Docker usable to non-root users
-  sudo usermod -aG docker $USER
-
-  # Use the 'local' logging driver to save some disk space in the long run!
-  echo '{' | sudo tee -a /etc/docker/daemon.json
-  echo '  "log-driver": "local",' | sudo tee -a /etc/docker/daemon.json
-  echo '  "log-opts": {' | sudo tee -a /etc/docker/daemon.json
-  echo '    "max-size": "10m",' | sudo tee -a /etc/docker/daemon.json
-  echo '    "max-file": "5"' | sudo tee -a /etc/docker/daemon.json
-  echo '  }' | sudo tee -a /etc/docker/daemon.json
-  echo '}' | sudo tee -a /etc/docker/daemon.json
 fi
+
+# Make Docker usable to non-root users
+sudo usermod -aG docker $USER
+
+# Use the 'local' logging driver to save some disk space in the long run!
+echo '{' | sudo tee -a /etc/docker/daemon.json
+echo '  "log-driver": "local",' | sudo tee -a /etc/docker/daemon.json
+echo '  "log-opts": {' | sudo tee -a /etc/docker/daemon.json
+echo '    "max-size": "10m",' | sudo tee -a /etc/docker/daemon.json
+echo '    "max-file": "5"' | sudo tee -a /etc/docker/daemon.json
+echo '  }' | sudo tee -a /etc/docker/daemon.json
+echo '}' | sudo tee -a /etc/docker/daemon.json
 {{ end }}

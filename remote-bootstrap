@@ -11,12 +11,12 @@ if [[ "$OS" != "Linux" && "$OS" != "Darwin" ]]; then
   echo "💣 Didn't find a supported system! ($OS not in [Linux, Darwin])" && exit 1
 elif [[ "$OS" == "Linux" ]]; then
   [ -f /etc/os-release ] && . /etc/os-release && OS=$ID
-  if [[ "$OS" != "debian" ]]; then
-    echo "💣 Didn't find a supported Linux! ($OS is not in [debian])" && exit 1
+  if [[ "$OS" != "debian" && "$OS" != "ubuntu"]]; then
+    echo "💣 Didn't find a supported Linux! ($OS is not in [debian, ubuntu])" && exit 1
   fi
 fi
 
-if [[ "$OS" == "debian" ]]; then
+if [[ "$OS" == "debian" || "$OS" == "ubuntu" ]]; then
   #######################################################################
   ### Linux: ensure mandatory tools
   INSTALLED_ANY_MANDATORY_TOOL=0
