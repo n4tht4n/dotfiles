@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 {{ if (and (eq .chezmoi.os "linux") (eq .env "server") ) }}
+OS="$(uname)"
 type docker&> /dev/null
 if [[ $? -ne 0 ]]; then
   # see: https://docs.docker.com/engine/install/debian/
@@ -24,15 +25,29 @@ if [[ $? -ne 0 ]]; then
   sudo apt -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 fi
 
+[ -f /etc/os-release ] && . /etc/os-release && OS=$ID
 # Make Docker usable to non-root users
+if [[ "$OS" == "ubuntu" ]]; then
+  sudo groupadd docker &> /dev/null
+fi
 sudo usermod -aG docker $USER
 
 # Use the 'local' logging driver to save some disk space in the long run!
-echo '{' | sudo tee -a /etc/docker/daemon.json
-echo '  "log-driver": "local",' | sudo tee -a /etc/docker/daemon.json
-echo '  "log-opts": {' | sudo tee -a /etc/docker/daemon.json
-echo '    "max-size": "10m",' | sudo tee -a /etc/docker/daemon.json
-echo '    "max-file": "5"' | sudo tee -a /etc/docker/daemon.json
-echo '  }' | sudo tee -a /etc/docker/daemon.json
-echo '}' | sudo tee -a /etc/docker/daemon.json
+if [[ "$OS" == "ubuntu" ]]; then
+  echo '{' | sudo tee -a /var/snap/docker/current/config/daemon.json
+  echo '  "log-driver": "local",' | sudo tee -a /var/snap/docker/current/config/daemon.json
+  echo '  "log-opts": {' | sudo tee -a /var/snap/docker/current/config/daemon.json
+  echo '    "max-size": "10m",' | sudo tee -a /var/snap/docker/current/config/daemon.json
+  echo '    "max-file": "5"' | sudo tee -a /var/snap/docker/current/config/daemon.json
+  echo '  }' | sudo tee -a /var/snap/docker/current/config/daemon.json
+  echo '}' | sudo tee -a /var/snap/docker/current/config/daemon.json
+else
+  echo '{' | sudo tee -a /etc/docker/daemon.json
+  echo '  "log-driver": "local",' | sudo tee -a /etc/docker/daemon.json
+  echo '  "log-opts": {' | sudo tee -a /etc/docker/daemon.json
+  echo '    "max-size": "10m",' | sudo tee -a /etc/docker/daemon.json
+  echo '    "max-file": "5"' | sudo tee -a /etc/docker/daemon.json
+  echo '  }' | sudo tee -a /etc/docker/daemon.json
+  echo '}' | sudo tee -a /etc/docker/daemon.json
+fi
 {{ end }}
